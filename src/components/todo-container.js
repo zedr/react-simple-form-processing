@@ -6,17 +6,15 @@ class TodoItem extends React.Component {
 
     handleSubmit(ev) {
         ev.preventDefault();
-        const json = {"form": ev.target.id, "data": {}};
-        new FormData(ev.target).forEach(function(value, prop){
-          json.data[prop] = value
-        });
-        console.log(JSON.stringify(json));
+        const row = [ev.target.id];
+        new FormData(ev.target).forEach((value) => row.push(value));
+        console.log(JSON.stringify(row));
         fetch(
             API_URL,
             {
                 method: "POST",
                 headers: {},
-                body: JSON.stringify(json)
+                body: JSON.stringify(row)
             }
         ).then((resp) => console.log(resp));
     }
