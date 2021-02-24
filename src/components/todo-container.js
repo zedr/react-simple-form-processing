@@ -3,6 +3,13 @@ import React from "react";
 const API_URL = "http://localhost:3000";
 
 const TodoItem = (props) => {
+  const state = {"isOpen": true};
+
+  function toggleOpen() {
+    state.isOpen = state.isOpen ? false : true;
+    console.log(state.isOpen? "Opened" : "Closed");
+  }
+
   function handleSubmit(ev) {
       ev.preventDefault();
       const row = [new Date().toLocaleString(), ev.target.id];
@@ -19,7 +26,7 @@ const TodoItem = (props) => {
   }
   return (
     <div>
-      <label>{props.item.shopName}</label>
+      <label onClick={toggleOpen}>{props.item.shopName}</label>
       <form id={props.item.shopName} onSubmit={handleSubmit}>
         <label>First name:</label>
         <input type="text" id="fname" name="fname" />
