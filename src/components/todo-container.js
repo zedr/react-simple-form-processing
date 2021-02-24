@@ -2,23 +2,23 @@ import React, { useState } from "react";
 
 const API_URL = "http://localhost:3000";
 
+function handleSubmit(ev) {
+  ev.preventDefault();
+  const row = [new Date().toLocaleString(), ev.target.id];
+  new FormData(ev.target).forEach((value) => row.push(value));
+  console.log(JSON.stringify(row));
+  fetch(
+      API_URL,
+      {
+          method: "POST",
+          headers: {},
+          body: JSON.stringify(row)
+      }
+  ).then((resp) => console.log(resp));
+}
+
 const TodoItem = (props) => {
   const [isOpen, setOpen] = useState(true);
-
-  function handleSubmit(ev) {
-      ev.preventDefault();
-      const row = [new Date().toLocaleString(), ev.target.id];
-      new FormData(ev.target).forEach((value) => row.push(value));
-      console.log(JSON.stringify(row));
-      fetch(
-          API_URL,
-          {
-              method: "POST",
-              headers: {},
-              body: JSON.stringify(row)
-          }
-      ).then((resp) => console.log(resp));
-  }
   return (
     <div>
       <label onClick={() => setOpen(isOpen? false : true)}>{props.item.shopName}</label>
