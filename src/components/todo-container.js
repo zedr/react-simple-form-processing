@@ -6,7 +6,7 @@ class TodoItem extends React.Component {
 
     handleSubmit(ev) {
         ev.preventDefault();
-        const row = [ev.target.id];
+        const row = [new Date().toLocaleString(), ev.target.id];
         new FormData(ev.target).forEach((value) => row.push(value));
         console.log(JSON.stringify(row));
         fetch(
