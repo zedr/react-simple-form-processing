@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 
 const API_URL = "http://localhost:3000";
 
 const TodoItem = (props) => {
-  const state = {"isOpen": true};
+  const [isOpen, setOpen] = useState(true);
 
   function handleSubmit(ev) {
       ev.preventDefault();
@@ -21,7 +21,7 @@ const TodoItem = (props) => {
   }
   return (
     <div>
-      <label onClick={() => state.isOpen ^= true}>{props.item.shopName}</label>
+      <label onClick={() => setOpen(isOpen? false : true)}>{props.item.shopName}</label>
       <form id={props.item.shopName} onSubmit={handleSubmit}>
         <label>First name:</label>
         <input type="text" id="fname" name="fname" />
