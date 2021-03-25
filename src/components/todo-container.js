@@ -1,21 +1,21 @@
 import React, {useState} from "react";
 
-const TodoItem = (props) => {
+const TodoItem = ({data}) => {
   return (
     <div>
-      <p>Date: {props.data.date}</p>
-      <p>Text: {props.data.text}</p>
+      <p>Date: {data.date}</p>
+      <p>Text: {data.text}</p>
     </div>
   )
 }
 
-const DatePickerWidget = (props) => {
+const DatePickerWidget = ({callback}) => {
   const [state, setState] = useState({date: "2021-03-01"})
 
   function handleChange(ev) {
     const selectedDate = ev.target.value;
     setState({date: selectedDate});
-    props.callback(selectedDate);
+    callback(selectedDate);
   }
 
   return (
