@@ -1,84 +1,58 @@
 import React, {useState} from "react";
 
-const API_URL = "http://localhost:3000";
-
 const TodoItem = (props) => {
-  const [isOpen, setOpen] = useState(true);
-
-  function handleSubmit(ev) {
-    ev.preventDefault();
-    const row = [new Date().toLocaleString(), ev.target.id, props.getSelectedDate()];
-    new FormData(ev.target).forEach((value) => row.push(value));
-    fetch(
-      API_URL,
-      {
-        method: "POST",
-        headers: {},
-        body: JSON.stringify(row)
-      }
-    ).then((resp) => window.alert(`
-  Sent: ${JSON.stringify(row)}
-  Received: ${resp.status} ${resp.statusText}
-  `));
-  }
-
   return (
     <div>
-      <label
-        onClick={() => setOpen(!isOpen)}>{props.item.shopName}</label>
-      <form className="form-example" id={props.item.shopName}
-            onSubmit={handleSubmit}>
-        <div className="form-example">
-          <label htmlFor="name">Enter your first name: </label>
-          <input type="text" name="fname" required/>
-        </div>
-        <div className="form-example">
-          <label htmlFor="name">Enter your last name: </label>
-          <input type="text" name="lname" required/>
-        </div>
-        <div className="form-example">
-          <button type="submit" value="Submit">Submit</button>
-        </div>
-      </form>
+      <p>Date: {props.data.date}</p>
+      <p>Text: {props.data.text}</p>
     </div>
   )
 }
 
 const DatePickerWidget = (props) => {
-  const [state, setState] = useState({'selectedDate': props.initialState.selectedDate});
+  const [state, setState] = useState({date: "2021-03-01"})
 
-  function handleChange(value) {
-    props.initialState.selectedDate = value;
-    setState({'selectedDate': value})
+  function handleChange(ev) {
+    const selectedDate = ev.target.value;
+    setState({date: selectedDate});
+    props.callback(selectedDate);
   }
 
   return (
     <div>
       <label htmlFor="start">Start date:</label>
       <input type="date" id="start" name="trip-start"
-             value={state.selectedDate}
-             onChange={(ev) => handleChange(ev.target.value)}
-             min="2018-01-01" max="2018-12-31"/>
+             value={state.date}
+             onChange={handleChange}
+             min="2021-01-01" max="2022-01-01"/>
     </div>
   )
 };
 
 const TodoContainer = () => {
-  const shops = [
-    {shopName: "Shop1"},
-    {shopName: "Shop2"}
+  const data = [
+    {date: "2021-03-26", text: "Sami"},
+    {date: "2021-03-25", text: "Lili"},
+    {date: "2021-03-24", text: "Sami"},
+    {date: "2021-03-24", text: "Lili"},
+    {date: "2021-03-23", text: "Sami"},
+    {date: "2021-03-23", text: "Lili"},
+    {date: "2021-03-22", text: "Sami"},
+    {date: "2021-03-21", text: "Lili"},
   ];
-  const containerState = {'selectedDate': '2018-07-07'};
-  const getContainerStateDate = () => containerState.selectedDate;
+  const [state, setState] = useState(data);
+
+  function listUpdater(selectedDate) {
+    console.log(`Filtering for: ${selectedDate}`);
+    setState(data.filter((item) => item.date === selectedDate));
+  }
 
   return (
     <React.Fragment>
-      <DatePickerWidget initialState={containerState}/>
+      <DatePickerWidget callback={listUpdater}/>
       <div>
-        {shops.map((shop, index) => (
-          <TodoItem key={index}
-                    item={shop}
-                    getSelectedDate={getContainerStateDate}/>
+        {state.map((date, index) => (
+          <TodoItem key={index} data={date} />
         ))}
       </div>
     </React.Fragment>
